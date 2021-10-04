@@ -101,7 +101,7 @@ module.exports = function(controller) {
     flow.addQuestion("Ótima escolha! Para concluir, precisamos confirmar algumas informações. É bem rapidinho\
     \n\n Para começar, preciso do número do seu RG ou CNH",
     async(response,flow,bot) => {
-        if(isNumeric(response.length() == 11 || response.length() == 10){
+        if(isNumeric(response.length() == 11 || response.length() == 10)){
             await flow.gotoThread("solicitaDtNascimento")
         }
         else {
