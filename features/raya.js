@@ -131,7 +131,8 @@ module.exports = function(controller) {
     // Solciita CEP
     flow.addQuestion("Para cadastrar seu endereço,vou precisar do seu CEP, por favor:", 
     async(response,flow,bot) => {
-        if(response == new RegExp(^\d{2}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?[\d]{3}\$)) {
+        var regexCep = new RegExp(^\d{2}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?[\d]{3}\$)
+        if(response == regexCep ) {
             await flow.gotoThread("solicitaNum")
         }
         else {
