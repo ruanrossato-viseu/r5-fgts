@@ -116,11 +116,12 @@ module.exports = function(controller) {
     \n Exemplo: 01/05/1970", 
     
     async(response,flow,bot) => {
-        if(response == new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)) {
-            await flow.gotoThread("")
+        var regexAniversario = new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)
+        if(response == regexAniversario.test(response)) {
+            await flow.gotoThread("solicitaCep")
         }
         else {
-            await flow.gotoThread("solicitaCep")
+            await flow.gotoThread("solicitaDtNascimento")
         }
     }, 
     "dataNascimento", 
