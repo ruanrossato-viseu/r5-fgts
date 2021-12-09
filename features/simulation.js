@@ -13,11 +13,13 @@ module.exports = function(controller) {
         return !isNaN(num)
       }
 
+    flow.before("simulation",async(flow,bot)=>{console.log(flow.vars.user)})
+
     // Solicita CPF
     flow.addQuestion("[simulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
     async(response,flow,bot) => {
         if(isNumeric(response) && response.length == 11) {
-            simulation.simulate(cpf)
+            simulation.simulate(flow.vars.user,cpf)
         }
         else {
             await bot.beginDialog("agent-transfer")
@@ -25,7 +27,6 @@ module.exports = function(controller) {
     }, 
     "cpf",
     "simulation")
-
 
     // Exibe condições
     flow.addQuestion("[simulation]+++Consegui as seguintes condições:\
