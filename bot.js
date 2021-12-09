@@ -42,7 +42,7 @@ controller.ready(() => {
     controller.loadModules(__dirname + '/features');
 
     controller.interrupts("Sair" || "encerrar" || "cancelar" || "interromper" || "parar" || "cancela" || "para" || "sai" || "eliminiar" || "anular" || "não receber" , "message", async (bot, message) => {
-        await bot.reply(message, "");
+        await bot.reply(message, "Até a próxima");
         await bot.cancelAllDialogs();
     });
 
