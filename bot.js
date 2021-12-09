@@ -46,6 +46,11 @@ controller.ready(() => {
         await bot.cancelAllDialogs();
     });
 
+    controller.interrupts("SIGNUPFLOW",async(bot,message)=>{
+        await bot.cancelAllDialogs();
+        await bot.beginDialog("signUp");
+    })
+
     controller.on("message", async (bot,message) => {  
         
         console.log("inicio")  
