@@ -12,6 +12,18 @@ module.exports = function(controller) {
         return !isNaN(num)
       }
 
+      // Solicita CNH ou RG
+    flow.addQuestion("[signUp]+++Gostou dessa oportunidade? Vamos fechar?",
+    async(response,flow,bot) => {
+        if(nlu.checkAffirmative(response)) {
+        }
+        else {
+            await bot.beginDialog("agent-transfer")
+        }
+    }, 
+    "rgCnh", 
+    "id")
+
     // Solicita CNH ou RG
     flow.addQuestion("[signUp]+++Ótima escolha! Para concluir, precisamos confirmar algumas informações. É bem rapidinho\
     \n\n Para começar, preciso do número do seu RG ou CNH",
