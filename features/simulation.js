@@ -1,0 +1,59 @@
+
+module.exports = function(controller) {
+
+    const { BotkitConversation } = require("botkit");
+    const flow = new BotkitConversation("simulation", controller);
+    const nlu = require('../scripts/nlu.js');
+    const simulation = require('../scripts/simulation.js');
+
+    flow.addAction("simulation")
+   
+
+    function isNumeric(num){
+        return !isNaN(num)
+      }
+
+    // Solicita CPF
+    flow.addQuestion("[simulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
+    async(response,flow,bot) => {
+        if(isNumeric(response) && response.length == 11) {
+            simulation.simulate(cpf)
+        }
+        else {
+            await bot.beginDialog("agent-transfer")
+        }
+    }, 
+    "cpf",
+    "simulation")
+
+
+    // Exibe condições
+    flow.addQuestion("[simulation]+++Consegui as seguintes condições:\
+                    \n\n[1] Banco Alfa:\
+                    \n - Valor: R$ 1.000,00\
+                    \n - Parcelas adiantadas: 10 \
+                    \n\n[2] Banco Beta:\
+                    \n - Valor: R$ 1.800,00\
+                    \n - Parcelas adiantadas: 14 \
+                    \n\n[3] Banco Gama:\
+                    \n - Valor: R$ 500,00\
+                    \n - Parcelas adiantadas: 8\
+                    \n\nQual delas quer contratar?",
+                    async(response,flow,bot) => {
+                        if(true|| response == "Safra" || response == "C6") {
+                        }
+                        else {
+                            await flow.gotoThread("especialista")
+                        }
+                    }, 
+                    "bancoEscolhido",
+                    "simulation") 
+
+
+    flow.after(async (response, bot) => {
+        await bot.cancelAllDialogs();
+        await bot.beginDialog("signUp");
+    });
+
+    controller.addDialog(flow);
+};

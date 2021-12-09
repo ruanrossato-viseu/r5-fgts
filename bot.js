@@ -10,7 +10,7 @@ const { BotkitCMSHelper } = require('botkit-plugin-cms');
 
 // Import a platform-specific adapter for webex.
 
-const { WebexAdapter } = require('botbuilder-adapter-webex');
+const { WebAdapter } = require('botbuilder-adapter-web');
 
 // const { MongoDbStorage } = require('botbuilder-storage-mongodb');
 
@@ -25,7 +25,7 @@ let storage = null;
 // }
 
 
-const adapter = new WebexAdapter({})    
+const adapter = new WebAdapter({});
 
 
 const controller = new Botkit({
@@ -57,11 +57,11 @@ controller.ready(() => {
 
 
 
-controller.webserver.get('/', (req, res) => {
+// controller.webserver.get('/', (req, res) => {
 
-    res.send(`This app is running Botkit ${ controller.version }.`);
+//     res.send(`This app is running Botkit ${ controller.version }.`);
 
-});
+// });
 
 
 
