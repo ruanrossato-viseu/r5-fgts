@@ -15,7 +15,7 @@ module.exports = function(controller) {
     flow.before("fgtsSimulation",async(flow,bot)=>{console.log(flow.vars.user)})
 
     // Solicita CPF
-    flow.addQuestion("[simulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
+    flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
     async(response,flow,bot) => {
         if(isNumeric(response) && response.length == 11) {
             await bot.say["[SIMULATION]+++"+response]
@@ -28,7 +28,7 @@ module.exports = function(controller) {
     "fgtsSimulation")
 
     // Exibe condições
-    flow.addQuestion("[simulation]+++Consegui as seguintes condições:\
+    flow.addQuestion("[fgtsSimulation]+++Consegui as seguintes condições:\
                     \n\n[1] Banco Alfa:\
                     \n - Valor: R$ 1.000,00\
                     \n - Parcelas adiantadas: 10 \
