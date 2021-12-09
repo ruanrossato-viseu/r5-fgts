@@ -16,14 +16,15 @@ module.exports = function(controller) {
 
     // Solicita CPF
     flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
-    async(response,flow,bot) => {
-        if(isNumeric(response) && response.length == 11) {
-            await bot.say["[SIMULATION]+++"+response]
-        }
-        else {
-            await bot.beginDialog("agent-transfer")
-        }
-    }, 
+        async(response,flow,bot) => {
+            if(isNumeric(response) && response.length == 11) {
+                await bot.say("[teste]+++teste")
+                await bot.say["[SIMULATION]+++"+response]
+            }
+            else {
+                await bot.beginDialog("agent-transfer")
+            }
+        }, 
     "cpf",
     "fgtsSimulation")
 
