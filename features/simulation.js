@@ -19,7 +19,7 @@ module.exports = function(controller) {
         async(response,flow,bot) => {
             if(isNumeric(response) && response.length == 11) {
                 await bot.say("[teste]+++teste")
-                await bot.say["[SIMULATION]+++"+response]
+                await bot.say("[SIMULATION]+++"+response)
             }
             else {
                 await bot.beginDialog("agent-transfer")
