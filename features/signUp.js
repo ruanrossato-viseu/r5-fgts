@@ -13,7 +13,7 @@ module.exports = function(controller) {
       }
 
       // Solicita CNH ou RG
-    flow.addQuestion("[signUp]+++Gostou dessa oportunidade? Vamos fechar?",
+    flow.addQuestion("[signUp]+++Qual das opções preferiu? _Digite o número do lado do nome do banco que quer contratar_",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
         }
