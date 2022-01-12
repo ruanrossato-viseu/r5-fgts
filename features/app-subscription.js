@@ -8,8 +8,8 @@ module.exports = function(controller) {
     flow.addAction("subscription")
     // Usuários com o aplicativo instalado, *Fazer o bot esperar 5 minutos e enviar esta mensagem
     flow.addQuestion("[Subscription]+++Ótimo! Agora, para eu consegui fazer a proposta, preciso que você faça o *cadastro e autorização* no app do FGTS.\
-    \nÉ rápido e tenho um passo-a-passo em vídeo para você entender como fazer. Dá uma olhada:\
-    \n https://youtu.be/TMi8BnjYNf4 \
+    \n\nÉ rápido e tenho um passo-a-passo em vídeo para você entender como fazer. Dá uma olhada:\
+    \nhttps://youtu.be/TMi8BnjYNf4 \
     \n\nQuando acabar, me avisa. Deu certo?",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
