@@ -5,10 +5,9 @@ module.exports = function(controller) {
     const flow = new BotkitConversation("app-install", controller);
 
     const nlu = require('../scripts/nlu.js');
-    // Mensagem inicial, botão instalou ou não aplicativo FGTS
     flow.addAction("app")
 
-    flow.addQuestion("[AppInstall]+++Você já tem o aplicativo oficial do FGTS instalado?",
+    flow.addQuestion("[AppInstall]+++Para iniciarmos é necessário ter o *aplicativo do FGTS* instalado no seu celular. Você já tem instalado o app?",
     async(response, flow, bot) =>{
         response = response.toLowerCase()
         if(nlu.checkAffirmative(response)) {
@@ -22,10 +21,21 @@ module.exports = function(controller) {
 
 
     // Usuários com o aplicativo não instalado
-    flow.addMessage("[AppInstall]+++Para instalar, clique em:\
-        \n\nAndroid: link\
-        \nApple: link\
-        \n\nMe chame de novo, quando acabar de instalar", "naoInstalado")
+    flow.addQuestion("[AppInstall]+++Para instalar, clique em:\
+        \n\nAndroid: https://play.google.com/store/apps/details?id=br.gov.caixa.fgts.trabalhador\
+        \nApple: https://apps.apple.com/br/app/fgts/id1038441027\
+        \n\nDepois que finalizar, eu quero saber se você conseguiu instalar. E ai conseguiu?",
+    async(response, flow, bot) =>{
+        response = response.toLowerCase()
+        if(nlu.checkAffirmative(response)) {
+       }
+       else {
+          await bot.beginDialog("agent-transfer")
+       }
+    },
+    "aplicativo",
+    "naoInstalado")
+    
         
     flow.after(async (response, bot) => {
         await bot.cancelAllDialogs();

@@ -1,3 +1,4 @@
+const { MongoDbStorage } = require("botbuilder-storage-mongodb");
 
 module.exports = function(controller) {
 
@@ -10,54 +11,54 @@ module.exports = function(controller) {
 
     function isNumeric(num){
         return !isNaN(num)
-      }
+    }
 
     // flow.before("fgtsSimulation",async(flow,bot)=>{console.log(flow.vars.user)})
 
     // Solicita CPF
-    flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu CPF, por favor",
+    flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu *CPF*, por favor",
         async(response,flow,bot) => {
-            if(isNumeric(response) && response.length == 11) {
-                await bot.say("[SIMULATION]+++"+response)
+          var cpf = response.replaceAll(/\D/g, '')
+          var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
+            if(cpfRegex.test(cpf)) { 
+                await bot.say("[SIMULATION]+++"+cpf)
+            }
+            else {
+                await flow.gotoThread("fgtsSimulationAgain")
+            }
+        }, 
+    "cpf",
+    "fgtsSimulation")
+
+    flow.addQuestion("[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
+    \n Ex: 123.45.789-01",
+        async(response,flow,bot) => {
+          var cpf = response.replaceAll(/\D/g, '')
+          var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
+            if(cpfRegex.test(cpf)) {
+                await bot.say("[SIMULATION]+++"+cpf)
             }
             else {
                 await bot.beginDialog("agent-transfer")
             }
         }, 
     "cpf",
-    "fgtsSimulation")
+    "fgtsSimulationAgain")
 
     
     flow.addQuestion("[fgtsSimulation]+++Ok, só um minutinho enquanto eu pesquiso as melhores ofertas. Assim que eu acabar, chamo você.",
         async(response,flow,bot) => {
-            await flow.repeat()
+            await flow.gotoThread("repeat")
         }, 
     "cpf",
     "fgtsSimulation")
-    
 
-    // // Exibe condições
-    // flow.addQuestion("[fgtsSimulation]+++Consegui as seguintes condições:\
-    //                 \n\n[1] Banco Alfa:\
-    //                 \n - Valor: R$ 1.000,00\
-    //                 \n - Parcelas adiantadas: 10 \
-    //                 \n\n[2] Banco Beta:\
-    //                 \n - Valor: R$ 1.800,00\
-    //                 \n - Parcelas adiantadas: 14 \
-    //                 \n\n[3] Banco Gama:\
-    //                 \n - Valor: R$ 500,00\
-    //                 \n - Parcelas adiantadas: 8\
-    //                 \n\nQual delas quer contratar?",
-    //                 async(response,flow,bot) => {
-    //                     if(true|| response == "Safra" || response == "C6") {
-    //                     }
-    //                     else {
-    //                         await flow.gotoThread("especialista")
-    //                     }
-    //                 }, 
-    //                 "bancoEscolhido",
-    //                 "fgtsSimulation") 
-
+    flow.addQuestion("[fgtsSimulation]+++Já estou finalizando a busca, aguarde mais um pouquinho por favor", 
+        async(response,flow,bot) => {
+            await flow.repeat()
+        }, 
+    "cpf",
+    "repeat")
 
     flow.after(async (response, bot) => {
         await bot.cancelAllDialogs();
@@ -65,3 +66,6 @@ module.exports = function(controller) {
 
     controller.addDialog(flow);
 };
+
+
+

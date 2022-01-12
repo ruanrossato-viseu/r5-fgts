@@ -8,8 +8,23 @@ module.exports = function(controller) {
     flow.addAction("bankAuthorization")
     flow.addMessage("[IMAGE]+++https://magentowordpresstutorial.com/wp-content/uploads/2020/05/CSharp-Tutorials-Header-min-1280x720-1.jpg","bankAuthorization")
     // Pergunta se conseguiu autorizar banco
-    flow.addQuestion("[bankAuthorization]+++Estamos quase lá! Agora você precisa autorizar os seguintes bancos a simularem as melhores condições para você. É só seguir o passo-a-passo na imagem\
+    flow.addQuestion("[bankAuthorization]+++Estamos quase lá! Agora você precisa *autorizar os bancos Safra e C6* a simularem as melhores condições para você. É só seguir o passo-a-passo na imagem\
     \n\n Conseguiu?", 
+    async(response,flow,bot) => {
+        if(nlu.checkAffirmative(response)) {
+        }
+        else {
+            await bot.beginDialog("bankAuthorizationAgain")
+        }
+    },
+    "autorizacao",
+    "bankAuthorization")
+
+
+    flow.addMessage("[IMAGE]+++https://magentowordpresstutorial.com/wp-content/uploads/2020/05/CSharp-Tutorials-Header-min-1280x720-1.jpg","bankAuthorizationAgain")
+    // Pergunta se conseguiu autorizar banco
+    flow.addQuestion("[bankAuthorization]+++Não entendi se você conseguiu. Siga o passo a passo exatamente como está na imagem, fazendo isso você conseguirá ver as melhores *ofertas simuladas no banco C6 e Safra*.\
+    \n\n Após finalizar, me informa se você conseguiu:", 
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
         }
@@ -18,7 +33,8 @@ module.exports = function(controller) {
         }
     },
     "autorizacao",
-    "bankAuthorization")
+    "bankAuthorizationAgain")
+
 
     flow.after(async (response, bot) => {
         await bot.cancelAllDialogs();
