@@ -18,7 +18,7 @@ module.exports = function(controller) {
     // Solicita CPF
     flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu *CPF*, por favor",
         async(response,flow,bot) => {
-          var cpf = response.replaceAll(/\D/g, '')
+          var cpf = response
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(cpf)) { 
                 await bot.say("[SIMULATION]+++"+cpf)
@@ -33,9 +33,9 @@ module.exports = function(controller) {
     flow.addQuestion("[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
     \n Ex: 123.45.789-01",
         async(response,flow,bot) => {
-          var cpf = response.replaceAll(/\D/g, '')
+          //var cpf = response.replaceAll(/\D/g, '')
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
-            if(cpfRegex.test(cpf)) {
+            if(cpfRegex.test(response)) {
                 await bot.say("[SIMULATION]+++"+cpf)
             }
             else {
