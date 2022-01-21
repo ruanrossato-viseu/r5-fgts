@@ -5,32 +5,38 @@ require("dotenv").config();
 
 
 
-module.exports.checkAffirmative = async function checkAffirmative(response){
+module.exports.checkAffirmative = function checkAffirmative(response){
     response = response.toLowerCase()
-    if(response.includes("sim") || response == "s" || response == "tenho" || response == "uhum" || response == "deu") {
+    console.log(response)
+    if(response.includes("sim") || response == "s" || response == "tenho" || response == "uhum" || response == "ok") {
+        console.log(response.includes("sim"))
+        console.log("affirmative")
         return true
     }
+
     else{
-        if(false /*google ai reconhece Positivo*/){
-            return true
-        }
-        else{
-            return false
-        }
+        return false
+        // if(/*google ai reconhece Positivo*/){
+        //     return true
+        // }
+        // else{
+        //     return false
+        // }
     }
 }
 
 
-module.exports.checkNegative = async function checkNegative(response){
+module.exports.checkNegative =  function checkNegative(response){
     if(response.includes("não") || response == "n"|| response.includes("nao")) {
         return true
     }
     else{
-        if(false /*google ai reconhece Positivo*/){
-            return true
-        }
-        else{
-            return false
-        }
+        return false
+        // if(false /*google ai reconhece Positivo*/){
+        //     return true
+        // }
+        // else{
+        //     return false
+        // }
     }
 }

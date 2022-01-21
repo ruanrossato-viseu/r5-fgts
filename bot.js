@@ -24,7 +24,6 @@ let storage = null;
 //     });
 // }
 
-
 const adapter = new WebAdapter({});
 
 
@@ -33,7 +32,6 @@ const controller = new Botkit({
     adapter: adapter,
     storage
 });
-
 
 // Once the bot has booted up its internal services, you can use them to do stuff.
 controller.ready(() => {
@@ -49,6 +47,12 @@ controller.ready(() => {
     controller.interrupts("SIGNUPFLOW","message",async(bot,message)=>{
         await bot.cancelAllDialogs();
         await bot.beginDialog("signUp");
+    })
+
+
+    controller.interrupts("SIMULATIONERROR","message",async(bot,message)=>{
+        await bot.cancelAllDialogs();
+        await bot.beginDialog("simulationError");
     })
 
     controller.on("message", async (bot,message) => {  
@@ -67,8 +71,5 @@ controller.ready(() => {
 //     res.send(`This app is running Botkit ${ controller.version }.`);
 
 // });
-
-
-
 
 
