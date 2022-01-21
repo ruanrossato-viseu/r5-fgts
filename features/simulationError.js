@@ -16,7 +16,7 @@ module.exports = function(controller) {
     // flow.before("fgtsSimulation",async(flow,bot)=>{console.log(flow.vars.user)})
 
     // Solicita CPF
-    flow.addQuestion("[fgtsSimulation]+++. Se quiser tentar novamente, me passe seu *CPF completo*",
+    flow.addQuestion("[fgtsSimulation]+++Se quiser tentar novamente, me passe seu *CPF completo*",
         async(response,flow,bot) => {
           var cpf = response
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
