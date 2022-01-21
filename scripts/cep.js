@@ -18,35 +18,31 @@ module.exports.checkCEP = async function checkCEP(cep){
             url: 'https://viacep.com.br/ws/'+cep+'/json/',
             headers: { 
                     'Content-Type': 'application/json'
-            },
-            data : data
+            }
     };
 
-    var success = false;
-    var requestCounter = 0;
-    let addressInfo = false;
-
-    while(!success && requestCounter < 3){
-        addressInfo = await axios(config)
+    var addressInfo = await axios(config)
         .then((response) => {
             console.log(response.data)
-            if(response.data.sucesso){
-                success = true;
-                return response.data;
-            }            
-            else{
-                return {sucesso:false};
-            }
+            return(response.data)
         })
         .catch((error) => {
-            console.log(error)
-            return {sucesso:false};
+            return false
         });
-
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        requestCounter+=1
-    }
 
     return addressInfo
 }
+
+
+// {
+// 	"cep": "23970-000",
+// 	"logradouro": "",
+// 	"complemento": "",
+// 	"bairro": "",
+// 	"localidade": "Paraty",
+// 	"uf": "RJ",
+// 	"ibge": "3303807",
+// 	"gia": "",
+// 	"ddd": "24",
+// 	"siafi": "5875"
+// }
