@@ -12,41 +12,42 @@ module.exports = function(controller) {
   flow.addAction("simulationChoice")
   
   flow.before("simulationChoice",async(flow,bot)=>{
-    var simulationText = "[fgtsSimulation]+++"
-    var choiceText = "[fgtsSimulation]+++"
-    if(flow.vars.simulation.length>1){
-      console.log("Mais de uma simulação")
-      simulationText+="Confira as melhores opções para você:\n"
-      for(var index = 0;index<flow.vars.simulation.length;index++){
-        var simulation = flow.vars.simulation[index]
+    flow.gotoThread("name")
+    // var simulationText = "[fgtsSimulation]+++"
+    // var choiceText = "[fgtsSimulation]+++"
+    // if(flow.vars.simulation.length>1){
+    //   console.log("Mais de uma simulação")
+    //   simulationText+="Confira as melhores opções para você:\n"
+    //   for(var index = 0;index<flow.vars.simulation.length;index++){
+    //     var simulation = flow.vars.simulation[index]
         
-        simulationText += `\n[${index+1}] ${simulation.bank}\
-                        \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
-                        \n  Você receberá: R$ ${simulation['simulation']['value']}\
-                        \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
-      }
-      choiceText += "Qual das opções preferiu? _Digite o número do lado do nome do banco que quer contratar_"
-    }
+    //     simulationText += `\n[${index+1}] ${simulation.bank}\
+    //                     \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
+    //                     \n  Você receberá: R$ ${simulation['simulation']['value']}\
+    //                     \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
+    //   }
+    //   choiceText += "Qual das opções preferiu? _Digite o número do lado do nome do banco que quer contratar_"
+    // }
 
-    else if (flow.vars.simulation.length==1){
-      console.log("Uma simulação")
-      simulationText+='Consegui a seguinte proposta para você:\n';
-      var simulation = flow.vars.simulation[0]
-      simulationText += `\n${simulation.bank}\
-                        \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
-                        \n  Você receberá: R$ ${simulation['simulation']['value']}\
-                        \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
-      choiceText += "O que achou da proposta? Quer contratar?"
-    }
+    // else if (flow.vars.simulation.length==1){
+    //   console.log("Uma simulação")
+    //   simulationText+='Consegui a seguinte proposta para você:\n';
+    //   var simulation = flow.vars.simulation[0]
+    //   simulationText += `\n${simulation.bank}\
+    //                     \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
+    //                     \n  Você receberá: R$ ${simulation['simulation']['value']}\
+    //                     \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
+    //   choiceText += "O que achou da proposta? Quer contratar?"
+    // }
 
-    else{
-      console.log("Nenhuma simulação")
-      simulationText+='Infelizmente, não encontramos ofertas para você nesse momento.';      
-      choiceText += "Gostaria de tentar novamente?"
-    }
-    flow.setVar("simulationText",simulationText)
-    flow.setVar("choiceText",choiceText)
-    flow.setVar("simulationCount",flow.vars.simulation.length)
+    // else{
+    //   console.log("Nenhuma simulação")
+    //   simulationText+='Infelizmente, não encontramos ofertas para você nesse momento.';      
+    //   choiceText += "Gostaria de tentar novamente?"
+    // }
+    // flow.setVar("simulationText",simulationText)
+    // flow.setVar("choiceText",choiceText)
+    // flow.setVar("simulationCount",flow.vars.simulation.length)
   })
 
   flow.addMessage("{{vars.simulationText}}","simulationChoice")
@@ -107,10 +108,217 @@ module.exports = function(controller) {
   flow.addQuestion("[signUp]+++Ótima escolha! Para concluir, precisamos anotar algumas informações. É bem rapidinho\
   \n\nPara começar, preciso do seu *nome completo*",
     async(response,flow,bot) => {
-      var listaMulher = []
-      var listaHomem =[]
-      if(response in listaMulher){
-        flow.setVar("genero","F")
+      var listaMulher = [
+      "Julia",
+      "Sophia",
+      "Isabella",
+      "Maria Eduarda",
+      "Manuela",
+      "Giovanna",
+      "Alice",
+      "Laura",
+      "Luiza",
+      "Beatriz",
+      "Mariana",
+      "Yasmin",
+      "Gabriela",
+      "Rafaela",
+      "Maria Clara",
+      "Maria Luiza",
+      "Ana Clara",
+      "Isabelle",
+      "Lara",
+      "Ana Luiza",
+      "Letícia",
+      "Ana Julia",
+      "Valentina",
+      "Nicole",
+      "Sarah",
+      "Vitória",
+      "Isadora",
+      "Lívia",
+      "Helena",
+      "Ana Beatriz",
+      "Lorena",
+      "Clara",
+      "Larissa",
+      "Emanuelly",
+      "Heloisa",
+      "Marina",
+      "Melissa",
+      "Gabrielly",
+      "Eduarda",
+      "Maria Fernanda",
+      "Rebeca",
+      "Amanda",
+      "Alícia",
+      "Bianca",
+      "Lavínia",
+      "Fernanda",
+      "Ester",
+      "Carolina",
+      "Emily",
+      "Cecília",
+      "Maria Júlia",
+      "Pietra",
+      "Ana Carolina",
+      "Milena",
+      "Marcela",
+      "Laís",
+      "Natália",
+      "Maria",
+      "Bruna",
+      "Camila",
+      "Luana",
+      "Ana Laura",
+      "Catarina",
+      "Maria Vitória",
+      "Maria Alice",
+      "Olivia",
+      "Agatha",
+      "Mirella",
+      "Sophie",
+      "Stella",
+      "Stefany",
+      "Isabel",
+      "Kamilly",
+      "Elisa",
+      "Luna",
+      "Eloá",
+      "Joana",
+      "Mariane",
+      "Bárbara",
+      "Juliana",
+      "Rayssa",
+      "Alana",
+      "Ana Sophia",
+      "Ana Lívia",
+      "Caroline",
+      "Brenda",
+      "Evelyn",
+      "Débora",
+      "Raquel",
+      "Maitê",
+      "Ana",
+      "Nina",
+      "Maria Sophia",
+      "Maria Cecília",
+      "Luiz",
+      "Antonella",
+      "Jennifer",
+      "Betina",
+      "Mariah",
+      "Sabrina"]
+
+      var listaHomem =[
+      "Bruno",
+      "Jorge",
+      "Miguel",
+      "Davi",
+      "Gabriel",
+      "Arthur",
+      "Lucas",
+      "Matheus",
+      "Pedro",
+      "Guilherme",
+      "Gustavo",
+      "Rafael",
+      "Felipe",
+      "Bernardo",
+      "Enzo",
+      "Nicolas",
+      "João Pedro",
+      "Pedro Henrique",
+      "Cauã",
+      "Vitor",
+      "Eduardo",
+      "Daniel",
+      "Henrique",
+      "Murilo",
+      "Vinicius",
+      "Samuel",
+      "Pietro",
+      "João Vitor",
+      "Leonardo",
+      "Caio",
+      "Heitor",
+      "Lorenzo",
+      "Isaac",
+      "Lucca",
+      "Thiago",
+      "João Gabriel",
+      "João",
+      "Theo",
+      "Bryan",
+      "Carlos Eduardo",
+      "Luiz Felipe",
+      "Breno",
+      "Emanuel",
+      "Ryan",
+      "Vitor Hugo",
+      "Yuri",
+      "Benjamin",
+      "Erick",
+      "Enzo Gabriel",
+      "Fernando",
+      "Joaquim",
+      "André",
+      "Tomás",
+      "Francisco",
+      "Rodrigo",
+      "Igor",
+      "Antonio",
+      "Ian",
+      "Luiz Otávio",
+      "Juan",
+      "João Guilherme",
+      "Diogo",
+      "Otávio",
+      "Nathan",
+      "Calebe",
+      "Danilo",
+      "Luan",
+      "Luiz Henrique",
+      "Kaique",
+      "Alexandre",
+      "João Miguel",
+      "Iago",
+      "Ricardo",
+      "Raul",
+      "Marcelo",
+      "Julio César",
+      "Cauê",
+      "Benício",
+      "Vitor Gabriel",
+      "Augusto",
+      "Pedro Lucas",
+      "Luiz Gustavo",
+      "Giovanni",
+      "Renato",
+      "Diego",
+      "João Paulo",
+      "Renan",
+      "Luiz Fernando",
+      "Anthony",
+      "Lucas Gabriel",
+      "Thales",
+      "Luiz Miguel",
+      "Henry",
+      "Marcos Vinicius",
+      "Kevin",
+      "Levi",
+      "Enrico",
+      "João Lucas",
+      "Hugo",
+      "Luiz Guilherme",
+      "Matheus Henrique"
+      ]
+      if(listaMulher.includes(response)){
+        flow.setVar("gender","F")
+        console.log("gender")
+      }
+      if(listaHomem.includes(response)){
+        flow.setVar("gender", "M")
       }
       await flow.gotoThread("documents")
     }, 
@@ -182,7 +390,7 @@ module.exports = function(controller) {
   // Solicita nome da mãe
   flow.addQuestion("[signUp]+++Ok, agora o *nome completo da sua mãe*, por favor",    
   async(response,flow,bot) => {
-    if(flow.vars.gender == "M" ||flow.vars.gender == "F" ){
+    if(flow.vars.gender == "M" || flow.vars.gender == "F" ){
       flow.gotoThread("address")
     }
     else{
