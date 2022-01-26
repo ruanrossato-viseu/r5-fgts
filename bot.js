@@ -45,8 +45,18 @@ controller.ready(() => {
     });
 
     controller.interrupts("SIGNUPFLOW","message",async(bot,message)=>{
-        await bot.cancelAllDialogs();
-        await bot.beginDialog("signUp");
+        try{
+            console.log(message.incoming_message.channelData.simulation.simulation)
+            
+            await bot.cancelAllDialogs();
+            
+            await bot.beginDialog("signUp",{"simulation":message.incoming_message.channelData.simulation.simulation});
+        }
+        catch{
+            await bot.cancelAllDialogs();
+            
+            await bot.beginDialog("simulationError");
+        }
     })
 
 
