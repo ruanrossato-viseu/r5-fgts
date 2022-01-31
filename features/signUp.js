@@ -106,12 +106,9 @@ module.exports = function(controller) {
   
   flow.addQuestion("[signUp]+++Ótima escolha! Para concluir, precisamos anotar algumas informações. É bem rapidinho\
   \n\nPara começar, preciso do seu *nome completo*",
-    async(response,flow,bot) => {
-      var listaMulher = []
-      var listaHomem =[]
-      if(response in listaMulher){
-        flow.setVar("genero","F")
-      }
+    async(response,flow,bot) => {  
+      flow.setVar("gender",nlu.checkGender(response))  
+        
       await flow.gotoThread("documents")
     }, 
   "name", 
@@ -122,7 +119,7 @@ module.exports = function(controller) {
     async(response,flow,bot) => {
       var regexRg = new RegExp(/(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)/)
       if(regexRg.test(response)) {
-        await flow.gotoThread("idDate")
+        await flow.gotoThread("motherName")
       }
       else {
         await flow.gotoThread("documentsAgain")
@@ -136,7 +133,7 @@ module.exports = function(controller) {
   async(response,flow,bot) => {
       var regexRg = new RegExp(/(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)/)
       if(regexRg.test(response)) {
-          await flow.gotoThread("idDate")
+          await flow.gotoThread("motherName")
       }
       else {
           await bot.beginDialog("agent-transfer")
@@ -145,36 +142,6 @@ module.exports = function(controller) {
   "id", 
   "documentsAgain")
 
-// ----
-
-  // Solicita data de emissão
-  flow.addQuestion("[signUp]+++Agora preciso da *data de emissão do RG*, no formato dia/mês/ano.\
-  \nExemplo: 01/05/2015",    
-  async(response,flow,bot) => {
-      var regexAniversario = new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)
-      if (regexAniversario.test(response)) {
-        await flow.gotoThread("motherName")
-      }
-      else {
-        await flow.gotoThread("idDateAgain")
-      }
-  }, 
-  "idDate", 
-  "idDate")
-
-  flow.addQuestion("[signUp]+++Hmm, não entendi. Você poderia me falar a *data de emissão do RG* por favor?.\
-  \n\n Veja um exemplo de como preciso: 01/05/2015",
-  async(response,flow,bot) => {
-      var regexAniversario = new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)
-      if (regexAniversario.test(response)) {
-          await flow.gotoThread("motherName")
-      }
-      else {
-          await bot.beginDialog("agent-transfer")
-      }
-  }, 
-  "idDate", 
-  "idDateAgain")
 
   
 // ----
@@ -182,6 +149,9 @@ module.exports = function(controller) {
   // Solicita nome da mãe
   flow.addQuestion("[signUp]+++Ok, agora o *nome completo da sua mãe*, por favor",    
   async(response,flow,bot) => {
+    if(nlu.checkErro(response)){
+      await flow.gotoThread("documents")
+    }
     if(flow.vars.gender == "M" ||flow.vars.gender == "F" ){
       flow.gotoThread("address")
     }
@@ -270,7 +240,7 @@ module.exports = function(controller) {
   "cep",
   "address")
 
-  flow.addQuestion("[signUp]+++Ops, esse CPF não foi válido. Vamos tentar de novo.\
+  flow.addQuestion("[signUp]+++Ops, esse CEP não foi válido. Vamos tentar de novo.\
   \n\n Escreva seu *CEP* no formato: 01234-567",
   async(response,flow,bot) => {
       // var regexCEP = new RegExp(/\d{2}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?[\d]{3}$/)
@@ -380,7 +350,7 @@ module.exports = function(controller) {
   \n[6] Outros",
   async(response,flow,bot) => {
       if (response == "1") {
-        flow.setVar("banco","Itaú")
+        flow.setVar("banco","341")
         await flow.gotoThread("agencia")
       }
       else if (response == "2") {
