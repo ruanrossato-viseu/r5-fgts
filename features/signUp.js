@@ -108,229 +108,22 @@ module.exports = function(controller) {
   flow.addQuestion("[signUp]+++Ótima escolha! Para concluir, precisamos anotar algumas informações. É bem rapidinho\
   \n\nPara começar, preciso do seu *nome completo*",
     async(response,flow,bot) => {
-      var listaMulher = [
-      "Julia",
-      "Sophia",
-      "Isabella",
-      "Maria Eduarda",
-      "Manuela",
-      "Giovanna",
-      "Alice",
-      "Laura",
-      "Luiza",
-      "Beatriz",
-      "Mariana",
-      "Yasmin",
-      "Gabriela",
-      "Rafaela",
-      "Maria Clara",
-      "Maria Luiza",
-      "Ana Clara",
-      "Isabelle",
-      "Lara",
-      "Ana Luiza",
-      "Letícia",
-      "Ana Julia",
-      "Valentina",
-      "Nicole",
-      "Sarah",
-      "Vitória",
-      "Isadora",
-      "Lívia",
-      "Helena",
-      "Ana Beatriz",
-      "Lorena",
-      "Clara",
-      "Larissa",
-      "Emanuelly",
-      "Heloisa",
-      "Marina",
-      "Melissa",
-      "Gabrielly",
-      "Eduarda",
-      "Maria Fernanda",
-      "Rebeca",
-      "Amanda",
-      "Alícia",
-      "Bianca",
-      "Lavínia",
-      "Fernanda",
-      "Ester",
-      "Carolina",
-      "Emily",
-      "Cecília",
-      "Maria Júlia",
-      "Pietra",
-      "Ana Carolina",
-      "Milena",
-      "Marcela",
-      "Laís",
-      "Natália",
-      "Maria",
-      "Bruna",
-      "Camila",
-      "Luana",
-      "Ana Laura",
-      "Catarina",
-      "Maria Vitória",
-      "Maria Alice",
-      "Olivia",
-      "Agatha",
-      "Mirella",
-      "Sophie",
-      "Stella",
-      "Stefany",
-      "Isabel",
-      "Kamilly",
-      "Elisa",
-      "Luna",
-      "Eloá",
-      "Joana",
-      "Mariane",
-      "Bárbara",
-      "Juliana",
-      "Rayssa",
-      "Alana",
-      "Ana Sophia",
-      "Ana Lívia",
-      "Caroline",
-      "Brenda",
-      "Evelyn",
-      "Débora",
-      "Raquel",
-      "Maitê",
-      "Ana",
-      "Nina",
-      "Maria Sophia",
-      "Maria Cecília",
-      "Luiz",
-      "Antonella",
-      "Jennifer",
-      "Betina",
-      "Mariah",
-      "Sabrina"]
-
-      var listaHomem =[
-      "Bruno",
-      "Jorge",
-      "Miguel",
-      "Davi",
-      "Gabriel",
-      "Arthur",
-      "Lucas",
-      "Matheus",
-      "Pedro",
-      "Guilherme",
-      "Gustavo",
-      "Rafael",
-      "Felipe",
-      "Bernardo",
-      "Enzo",
-      "Nicolas",
-      "João Pedro",
-      "Pedro Henrique",
-      "Cauã",
-      "Vitor",
-      "Eduardo",
-      "Daniel",
-      "Henrique",
-      "Murilo",
-      "Vinicius",
-      "Samuel",
-      "Pietro",
-      "João Vitor",
-      "Leonardo",
-      "Caio",
-      "Heitor",
-      "Lorenzo",
-      "Isaac",
-      "Lucca",
-      "Thiago",
-      "João Gabriel",
-      "João",
-      "Theo",
-      "Bryan",
-      "Carlos Eduardo",
-      "Luiz Felipe",
-      "Breno",
-      "Emanuel",
-      "Ryan",
-      "Vitor Hugo",
-      "Yuri",
-      "Benjamin",
-      "Erick",
-      "Enzo Gabriel",
-      "Fernando",
-      "Joaquim",
-      "André",
-      "Tomás",
-      "Francisco",
-      "Rodrigo",
-      "Igor",
-      "Antonio",
-      "Ian",
-      "Luiz Otávio",
-      "Juan",
-      "João Guilherme",
-      "Diogo",
-      "Otávio",
-      "Nathan",
-      "Calebe",
-      "Danilo",
-      "Luan",
-      "Luiz Henrique",
-      "Kaique",
-      "Alexandre",
-      "João Miguel",
-      "Iago",
-      "Ricardo",
-      "Raul",
-      "Marcelo",
-      "Julio César",
-      "Cauê",
-      "Benício",
-      "Vitor Gabriel",
-      "Augusto",
-      "Pedro Lucas",
-      "Luiz Gustavo",
-      "Giovanni",
-      "Renato",
-      "Diego",
-      "João Paulo",
-      "Renan",
-      "Luiz Fernando",
-      "Anthony",
-      "Lucas Gabriel",
-      "Thales",
-      "Luiz Miguel",
-      "Henry",
-      "Marcos Vinicius",
-      "Kevin",
-      "Levi",
-      "Enrico",
-      "João Lucas",
-      "Hugo",
-      "Luiz Guilherme",
-      "Matheus Henrique"
-      ]
-      if(listaMulher.includes(response)){
-        flow.setVar("gender","F")
-        console.log("gender")
-      }
-      if(listaHomem.includes(response)){
-        flow.setVar("gender", "M")
-      }
+      flow.setVar("gender",nlu.checkGender(response))  
       await flow.gotoThread("documents")
     }, 
   "name", 
   "name")
 
   
-  flow.addQuestion("[signUp]+++E agora preciso do número do seu *RG*",
+  flow.addQuestion("[signUp]+++E agora preciso do *número do seu RG*\
+  \n\n _Lembrando que se precisar voltar, basta digitar *voltar* em qualquer momento_.",
     async(response,flow,bot) => {
       var regexRg = new RegExp(/(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)/)
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("name")
+      }
       if(regexRg.test(response)) {
-        await flow.gotoThread("idDate")
+        await flow.gotoThread("motherName")
       }
       else {
         await flow.gotoThread("documentsAgain")
@@ -339,12 +132,15 @@ module.exports = function(controller) {
   "id", 
   "documents")
 
-  flow.addQuestion("[signUp]+++Desculpe, eu não entendi! Para avançarmos preciso que informe o número do *RG *.\
+  flow.addQuestion("[signUp]+++Desculpe, eu não entendi! Para avançarmos preciso que informe o *número do RG*.\
   \n\nPode ser nesse formato para RG: 12.123.123-4",
   async(response,flow,bot) => {
       var regexRg = new RegExp(/(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)/)
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("name")
+      }
       if(regexRg.test(response)) {
-          await flow.gotoThread("idDate")
+          await flow.gotoThread("motherName")
       }
       else {
           await bot.beginDialog("agent-transfer")
@@ -352,44 +148,15 @@ module.exports = function(controller) {
   }, 
   "id", 
   "documentsAgain")
-
-// ----
-
-  // Solicita data de emissão
-  flow.addQuestion("[signUp]+++Agora preciso da *data de emissão do RG*, no formato dia/mês/ano.\
-  \nExemplo: 01/05/2015",    
-  async(response,flow,bot) => {
-      var regexAniversario = new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)
-      if (regexAniversario.test(response)) {
-        await flow.gotoThread("motherName")
-      }
-      else {
-        await flow.gotoThread("idDateAgain")
-      }
-  }, 
-  "idDate", 
-  "idDate")
-
-  flow.addQuestion("[signUp]+++Hmm, não entendi. Você poderia me falar a *data de emissão do RG* por favor?.\
-  \n\n Veja um exemplo de como preciso: 01/05/2015",
-  async(response,flow,bot) => {
-      var regexAniversario = new RegExp(/(\d{2})[-.\/](\d{2})[-.\/](\d{4}$)/)
-      if (regexAniversario.test(response)) {
-          await flow.gotoThread("motherName")
-      }
-      else {
-          await bot.beginDialog("agent-transfer")
-      }
-  }, 
-  "idDate", 
-  "idDateAgain")
-
   
 // ----
 
   // Solicita nome da mãe
   flow.addQuestion("[signUp]+++Ok, agora o *nome completo da sua mãe*, por favor",    
   async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("documents")
+    }
     if(flow.vars.gender == "M" || flow.vars.gender == "F" ){
       flow.gotoThread("address")
     }
@@ -404,10 +171,13 @@ module.exports = function(controller) {
 // ----
 
   // Solicita gênero
-  flow.addQuestion("[signUp]+++E com qual gênero você se identifica?\
+  flow.addQuestion("[signUp]+++E com qual *gênero* você se identifica?\
   \n[1] - Feminino\
   \n[2] - Masculino",    
   async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("motherName")
+    }
     response = response.toLowerCase()
     if(response.includes("1")||response.includes("feminino")||response.includes("mulher")){
       flow.setVar("gender","F")
@@ -427,6 +197,9 @@ module.exports = function(controller) {
 
   flow.addQuestion("[signUp]+++Essa opção não é válida. Digite *1 para Feminino* ou *2 para Masculino*",    
   async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("motherName")
+    }
     response = response.toLowerCase()
     if(response.includes("1")||response.includes("feminino")||response.includes("mulher")){
       flow.setVar("gender","F")
@@ -455,7 +228,9 @@ module.exports = function(controller) {
       // else {
       //     await flow.gotoThread("addressAgain")
       // }
-
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("gender")
+      }
       var address = await cep.checkCEP(response)
       if(address){
         if(address.logradouro != ""){
@@ -488,6 +263,9 @@ module.exports = function(controller) {
       // else {
       //     await bot.beginDialog("agent-transfer")
       // }
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("gender")
+      }
       var address = cep.checkCEP(response)
       
       if(address){
@@ -516,7 +294,12 @@ module.exports = function(controller) {
   // Solicita logradouro da casa
   flow.addQuestion("[signUp]+++Obrigada. Agora preciso do *endereço* desse CEP", 
   async(response,flow,bot) => {
-        await flow.gotoThread("addressNumber")
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("address")
+    }
+    else{
+      await flow.gotoThread("addressNumber")
+    }
   }, 
   "addressStreet",
   "addressStreet")
@@ -526,7 +309,12 @@ module.exports = function(controller) {
   flow.addQuestion("[signUp]+++Identifiquei o seguinte endereço: {{vars.addressStreet}}, {{vars.addressNeighbourhood}} na cidade de {{vars.addressCity}}-{{vars.addressState}}.\
   \nAgora me diga o *número* do imóvel?", 
   async(response,flow,bot) => {
-        await flow.gotoThread("dadosBanco")
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("addressStreet")
+    }
+    else{
+      await flow.gotoThread("dadosBanco")
+    }
       
       
   }, 
@@ -544,30 +332,38 @@ module.exports = function(controller) {
   \n[3] Bradesco\
   \n[4] Banco do Brasil\
   \n[5] Caixa\
-  \n[6] Outros",
+  \n[6] Nubank\
+  \n[7] Outros",
   async(response,flow,bot) => {
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("addressNumber")
+      }
 
       if (response == "1") {
-        flow.setVar("banco","Itaú")
+        flow.setVar("banco","341")
         await flow.gotoThread("agencia")
       }
       else if (response == "2") {
-        flow.setVar("banco","Santander")
+        flow.setVar("banco","033")
         await flow.gotoThread("agencia")
       }
       else if (response == "3") {
-        flow.setVar("banco","Bradesco")
+        flow.setVar("banco","237")
         await flow.gotoThread("agencia")
       }
       else if (response == "4") {
-        flow.setVar("banco","Banco do Brasil")
+        flow.setVar("banco","001")
         await flow.gotoThread("agencia")
       }
       else if (response == "5") {
-        flow.setVar("banco","Caixa")
+        flow.setVar("banco","104")
         await flow.gotoThread("agencia")
       }
       else if (response == "6") {
+        flow.setVar("banco","260")
+        await flow.gotoThread("agencia")
+      }
+      else if (response == "7") {
         flow.setVar("banco","Outros")
         await flow.gotoThread("agencia")
       }
@@ -585,31 +381,39 @@ module.exports = function(controller) {
   \n[3] Bradesco\
   \n[4] Banco do Brasil\
   \n[5] Caixa\
-  \n[6] Outros",
+  \n[6] Nubank\
+  \n[7] Outros",
   async(response,flow,bot) => {
+      if(nlu.checkError(response)) {
+        await flow.gotoThread("addressNumber")
+      }
       if (response == "1") {
-        flow.setVar("banco","Itaú")
+        flow.setVar("banco","341")
         await flow.gotoThread("agencia")
       }
       else if (response == "2") {
-        flow.setVar("banco","Santander")
+        flow.setVar("banco","033")
         await flow.gotoThread("agencia")
       }
       else if (response == "3") {
-        flow.setVar("banco","Bradesco")
+        flow.setVar("banco","237")
         await flow.gotoThread("agencia")
       }
       else if (response == "4") {
-        flow.setVar("banco","Banco do Brasil")
+        flow.setVar("banco","001")
         await flow.gotoThread("agencia")
       }
       else if (response == "5") {
-        flow.setVar("banco","Caixa")
+        flow.setVar("banco","104")
         await flow.gotoThread("agencia")
       }
       else if (response == "6") {
-        flow.setVar("banco","Outros")
+        flow.setVar("banco","260")
         await flow.gotoThread("agencia")
+      }
+      else if (response == "7") {
+        flow.setVar("banco","Outros")
+        await flow.gotoThread("qualBanco")
       }
       else {
         await bot.beginDialog("agent-transfer")
@@ -618,12 +422,25 @@ module.exports = function(controller) {
   "banco",
   "dadosBancoAgain")
 
+  flow.addQuestion("Certo, e qual o *código do seu banco*?\
+  \nEx: O código do banco votorantim é *655*",
+  async(response,flow,bot) => {
+    await flow.gotoThread("agencia")
+  },
+  "codigoBanco",
+  "qualBanco")
+
   // ------
 
   // Solicita a agência
   flow.addQuestion("[signUp]+++Me passa o número da sua *agência*?",
   async(response,flow,bot) => {
-        await flow.gotoThread("cc")
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("dadosBanco")
+    }
+    else{
+      await flow.gotoThread("cc")
+    }
       
   },
   "agencia",
@@ -637,7 +454,12 @@ module.exports = function(controller) {
   flow.addQuestion("[signUp]+++E agora o número da *conta corrente*\
   \n*Obs:* Precisa conter o dígito no final",
   async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("agencia")
+    }
+    else{
       await flow.gotoThread("finalizacao")
+    }
      
   },
   "conta",
@@ -647,10 +469,63 @@ module.exports = function(controller) {
 
 
   // Finaliza bot
-  flow.addMessage("[ending]+++Pronto! Sua requisição foi enviada com sucesso!\
-  \n\n Você vai receber um SMS com o link para concluir a formalização. É só seguir por lá! Até mais", 
-  "finalizacao")
+  flow.addQuestion("[ending]+++Pronto! Sua requisição foi *enviada com sucesso*!\
+  \n\n *Siga nesse link para concluir a formalização*: https://wa.me/551124248472?text=Ola. É só seguir por lá!\
+  \n\n Gostaria de participar de uma pesquisa de satisfação?",
+  async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("cc")
+    }
+    if(nlu.checkAffirmative(response)) {
+      await flow.gotoThread("nota")
+    }
+    else {
+        await bot.beginDialog("")
+    }
+},
+"pesquisa",
+"finalizacao")
 
+flow.addQuestion("[ending]+++Informe uma nota de *0 a 10*, quão satisfeito você ficou em relação ao nosso atendimento:",
+  async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("finalizacao")
+    }
+    if(nlu.checkRate(response)) {
+      await flow.gotoThread("nota")
+    }
+    else {
+        await bot.beginDialog("notaAgain")
+    }
+},
+"nota",
+"nota")
+
+flow.addQuestion("[ending]+++Não consegui compreender, pode tentar de novo? De *0 a 10*, que *nota* você daria para o nosso serviço?",
+  async(response,flow,bot) => {
+    if(nlu.checkError(response)) {
+      await flow.gotoThread("finalizacao")
+    }
+    if(nlu.checkRate(response)) {
+      await flow.gotoThread("nota")
+    }
+    else {
+        await bot.beginDialog("despedida")
+    }
+},
+"nota",
+"notaAgain")
+
+flow.addQuestion("[ending]+++Tudo bem, obrigado! Até mais.",
+  async(response,flow,bot) => {
+    if(nlu.checkAffirmative(response)) {
+    }
+    else {
+        await bot.beginDialog("")
+    }
+},
+"",
+"despedida")
 
   flow.after(async (results, bot) => {
       var dadosUsuario ={

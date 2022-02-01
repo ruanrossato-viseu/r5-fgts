@@ -18,6 +18,12 @@ module.exports = function(controller) {
     // Solicita CPF
     flow.addQuestion("[fgtsSimulation]+++Para fazer sua simulação, só preciso que escreva o seu *CPF*, por favor",
         async(response,flow,bot) => {
+          if(nlu.checkError(response)) {
+            flow.after(async (response, bot) => {
+              await bot.cancelAllDialogs();
+              await bot.beginDialog("app-subscription");
+            });
+          }
           var cpf = response
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(cpf)) { 
@@ -33,6 +39,12 @@ module.exports = function(controller) {
     flow.addQuestion("[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
     \n Ex: 123.45.789-01",
         async(response,flow,bot) => {
+          if(nlu.checkError(response)) {
+            flow.after(async (response, bot) => {
+              await bot.cancelAllDialogs();
+              await bot.beginDialog("app-subscription");
+            });
+          }
           //var cpf = response.replaceAll(/\D/g, '')
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(response)) {
@@ -66,6 +78,5 @@ module.exports = function(controller) {
 
     controller.addDialog(flow);
 };
-
 
 
