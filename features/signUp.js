@@ -425,10 +425,31 @@ module.exports = function(controller) {
   flow.addQuestion("Certo, e qual o *código do seu banco*?\
   \nEx: O código do banco votorantim é *655*",
   async(response,flow,bot) => {
-    await flow.gotoThread("agencia")
+    var regexCodigo = new RegExp(/[0-9]{3}/)
+    if(regexCodigo.test(response)) {
+      await flow.gotoThread("agencia")
+    }
+    else {
+      await flow.gotoThread("qualBancoAgain")
+    }
   },
   "codigoBanco",
   "qualBanco")
+
+  flow.addQuestion("Hmm, não entendi, qual é o *código do seu banco*?\
+  \n_Digite apenas o código do seu banco_\
+  \nEx: *655*",
+  async(response,flow,bot) => {
+    var regexCodigo = new RegExp(/[0-9]{3}/)
+    if(regexCodigo.test(response)) {
+      await flow.gotoThread("agencia")
+    }
+    else {
+      await bot.beginDialog("agent-transfer")
+    }
+  },
+  "codigoBanco",
+  "qualBancoAgain")
 
   // ------
 
