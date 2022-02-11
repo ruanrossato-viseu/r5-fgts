@@ -253,7 +253,7 @@ module.exports = function(controller) {
   "cep",
   "address")
 
-  flow.addQuestion("[signUp]+++Ops, esse CPF não foi válido. Vamos tentar de novo.\
+  flow.addQuestion("[signUp]+++Ops, esse CEP não foi válido. Vamos tentar de novo.\
   \n\n Escreva seu *CEP* no formato: 01234-567",
   async(response,flow,bot) => {
       // var regexCEP = new RegExp(/\d{2}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?[\d]{3}$/)
@@ -365,7 +365,7 @@ module.exports = function(controller) {
       }
       else if (response == "7") {
         flow.setVar("banco","Outros")
-        await flow.gotoThread("agencia")
+        await flow.gotoThread("qualBanco")
       }
       else {
         await flow.gotoThread("dadosBancoAgain")
@@ -490,22 +490,11 @@ module.exports = function(controller) {
 
 
   // Finaliza bot
-  flow.addQuestion("[ending]+++Pronto! Sua requisição foi *enviada com sucesso*!\
-  \n\n *Siga nesse link para concluir a formalização*: https://wa.me/551124248472?text=Ola. É só seguir por lá!\
-  \n\n Gostaria de participar de uma pesquisa de satisfação?",
-  async(response,flow,bot) => {
-    if(nlu.checkError(response)) {
-      await flow.gotoThread("cc")
-    }
-    if(nlu.checkAffirmative(response)) {
-      await flow.gotoThread("nota")
-    }
-    else {
-        await bot.beginDialog("")
-    }
-},
-"pesquisa",
-"finalizacao")
+  flow.addMessage("[ending]+++Pronto! Sua requisição foi *enviada com sucesso*!\
+  \n\n *Siga nesse link para concluir a formalização*: https://wa.me/551124248472?text=Ola. É só seguir por lá!",
+  "finalizacao")
+
+  flow.addAction("nota", "finalizacao")
 
 flow.addQuestion("[ending]+++Informe uma nota de *0 a 10*, quão satisfeito você ficou em relação ao nosso atendimento:",
   async(response,flow,bot) => {
@@ -513,7 +502,7 @@ flow.addQuestion("[ending]+++Informe uma nota de *0 a 10*, quão satisfeito voc�
       await flow.gotoThread("finalizacao")
     }
     if(nlu.checkRate(response)) {
-      await flow.gotoThread("nota")
+      await flow.gotoThread("despedida")
     }
     else {
         await bot.beginDialog("notaAgain")
@@ -528,24 +517,16 @@ flow.addQuestion("[ending]+++Não consegui compreender, pode tentar de novo? De 
       await flow.gotoThread("finalizacao")
     }
     if(nlu.checkRate(response)) {
-      await flow.gotoThread("nota")
+      await flow.gotoThread("despedida")
     }
     else {
-        await bot.beginDialog("despedida")
+        await bot.beginDialog("agent-transfer")
     }
 },
 "nota",
 "notaAgain")
 
-flow.addQuestion("[ending]+++Tudo bem, obrigado! Até mais.",
-  async(response,flow,bot) => {
-    if(nlu.checkAffirmative(response)) {
-    }
-    else {
-        await bot.beginDialog("")
-    }
-},
-"",
+flow.addMessage("[ending]+++Tudo bem, obrigado! Até mais.",
 "despedida")
 
   flow.after(async (results, bot) => {
