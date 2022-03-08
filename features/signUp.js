@@ -488,7 +488,6 @@ module.exports = function(controller) {
 
 
 
-
   // Finaliza bot
   flow.addMessage("[ending]+++Pronto! Sua requisição foi *enviada com sucesso*!\
   \n\n *Siga nesse link para concluir a formalização*: https://wa.me/551124248472?text=Ola. É só seguir por lá!",
