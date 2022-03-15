@@ -39,8 +39,9 @@ controller.ready(() => {
     // load traditional developer-created local custom feature modules
     controller.loadModules(__dirname + '/features');
 
-    controller.interrupts("Sair" || "encerrar" || "cancelar" || "interromper" || "parar" || "cancela" || "para" || "sai" || "eliminiar" || "anular" || "não receber" , "message", async (bot, message) => {
+    controller.interrupts("PARAR" , "message", async (bot, message) => {
         await bot.reply(message, "Até a próxima");
+        console.log("Encerramento")
         await bot.cancelAllDialogs();
     });
 

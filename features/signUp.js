@@ -72,11 +72,13 @@ module.exports = function(controller) {
     else if(flow.vars.simulationCount == 1){
       console.log("Uma simulação")
       if(nlu.checkAffirmative(response)){
+        await bot.say("[CHOICE]+++C6")
         var bankChoice = flow.vars.simulation[0].bank
         flow.setVar("simulationChoice",bankChoice)
         flow.gotoThread("name")
       }
       else{
+        await bot.say("[CHOICE]+++False")
         await bot.say("[fgtsSimulation]+++Ok, se quiser simular novamente, é só chamar")
         await bot.say("[FINISH]+++[Sem simulação]")
         await bot.cancelAllDialogs();
@@ -149,9 +151,9 @@ module.exports = function(controller) {
   // Solicita nome da mãe
   flow.addQuestion("[signUp]+++Ok, agora o *nome completo da sua mãe*, por favor",    
   async(response,flow,bot) => {
-    if(nlu.checkErro(response)){
-      await flow.gotoThread("documents")
-    }
+    // if(nlu.checkErro(response)){
+    //   await flow.gotoThread("documents")
+    // }
     if(flow.vars.gender == "M" ||flow.vars.gender == "F" ){
       flow.gotoThread("address")
     }
@@ -297,7 +299,6 @@ module.exports = function(controller) {
 
 
 
-
   // Solicita o nome do banco
   flow.addQuestion("[signUp]+++Para finalizar, preciso dos seus *dados bancários*\
   \n\n Sua conta é em qual banco?_Digite o número do lado do banco_\
@@ -306,32 +307,38 @@ module.exports = function(controller) {
   \n[3] Bradesco\
   \n[4] Banco do Brasil\
   \n[5] Caixa\
-  \n[6] Outros",
+  \n[6] Nubank\
+  \n[7] Outros",
   async(response,flow,bot) => {
-
+    // if(nlu.checkError(response)) {
+    //   await flow.gotoThread("addressNumber")
+    // }
       if (response == "1") {
-        flow.setVar("banco","Itaú")
+        flow.setVar("banco","341")
         await flow.gotoThread("agencia")
       }
       else if (response == "2") {
-        flow.setVar("banco","Santander")
+        flow.setVar("banco","033")
         await flow.gotoThread("agencia")
       }
       else if (response == "3") {
-        flow.setVar("banco","Bradesco")
+        flow.setVar("banco","237")
         await flow.gotoThread("agencia")
       }
       else if (response == "4") {
-        flow.setVar("banco","Banco do Brasil")
+        flow.setVar("banco","001")
         await flow.gotoThread("agencia")
       }
       else if (response == "5") {
-        flow.setVar("banco","Caixa")
+        flow.setVar("banco","104")
         await flow.gotoThread("agencia")
       }
       else if (response == "6") {
-        flow.setVar("banco","Outros")
+        flow.setVar("banco","260")
         await flow.gotoThread("agencia")
+      }
+      else if (response == "7") {
+        await flow.gotoThread("qualBanco")
       }
       else {
         await flow.gotoThread("dadosBancoAgain")
@@ -347,31 +354,38 @@ module.exports = function(controller) {
   \n[3] Bradesco\
   \n[4] Banco do Brasil\
   \n[5] Caixa\
-  \n[6] Outros",
+  \n[6] Nubank\
+  \n[7] Outros",
   async(response,flow,bot) => {
+    //  if(nlu.checkError(response)) {
+    //   await flow.gotoThread("addressNumber")
+    // }
       if (response == "1") {
         flow.setVar("banco","341")
         await flow.gotoThread("agencia")
       }
       else if (response == "2") {
-        flow.setVar("banco","Santander")
+        flow.setVar("banco","033")
         await flow.gotoThread("agencia")
       }
       else if (response == "3") {
-        flow.setVar("banco","Bradesco")
+        flow.setVar("banco","237")
         await flow.gotoThread("agencia")
       }
       else if (response == "4") {
-        flow.setVar("banco","Banco do Brasil")
+        flow.setVar("banco","001")
         await flow.gotoThread("agencia")
       }
       else if (response == "5") {
-        flow.setVar("banco","Caixa")
+        flow.setVar("banco","104")
         await flow.gotoThread("agencia")
       }
       else if (response == "6") {
-        flow.setVar("banco","Outros")
+        flow.setVar("banco","260")
         await flow.gotoThread("agencia")
+      }
+      else if (response == "7") {
+        await flow.gotoThread("qualBanco")
       }
       else {
         await bot.beginDialog("agent-transfer")
@@ -380,6 +394,37 @@ module.exports = function(controller) {
   "banco",
   "dadosBancoAgain")
 
+  flow.addQuestion("[signUp]+++Certo, e qual o *código do seu banco*?\
+  \n \nCaso não saiba o código, consulte o link abaixo:\
+  \nhttps://www.conta-corrente.com/codigo-dos-bancos/",
+  async(response,flow,bot) => {
+    var regexCodigo = new RegExp(/[0-9]{3}/)
+    if(regexCodigo.test(response)) {
+      flow.setVar("banco",response)
+      await flow.gotoThread("agencia")
+    }
+    else {
+      await flow.gotoThread("qualBancoAgain")
+    }
+  },
+  "codigoBanco",
+  "qualBanco")
+
+  flow.addQuestion("[signUp]+++Hmm, não entendi, qual é o *código do seu banco*?\
+  \n_Digite apenas o código do seu banco_\
+  \nEx: *655*",
+  async(response,flow,bot) => {
+    var regexCodigo = new RegExp(/[0-9]{3}/)
+    if(regexCodigo.test(response)) {
+      flow.setVar("banco",response)
+      await flow.gotoThread("agencia")
+    }
+    else {
+      await bot.beginDialog("agent-transfer")
+    }
+  },
+  "codigoBanco",
+  "qualBancoAgain")
   // ------
 
   // Solicita a agência
@@ -397,13 +442,23 @@ module.exports = function(controller) {
 
   // Solicita a conta
   flow.addQuestion("[signUp]+++E agora o número da *conta corrente*\
-  \n*Obs:* Precisa conter o dígito no final",
+  \n*Obs:*Se houver, não coloque o dígito",
   async(response,flow,bot) => {
-      await flow.gotoThread("finalizacao")
+      await flow.gotoThread("ccDigit")
      
   },
   "conta",
   "cc")
+
+  // Solicita a conta
+  flow.addQuestion("[signUp]+++Para acabar, me passa o *dígito da sua conta corrente*\
+  \n*Obs:*Se não tiver dígito, é só escrever 0",
+  async(response,flow,bot) => {
+      await flow.gotoThread("finalizacao")
+     
+  },
+  "ccDigit",
+  "ccDigit")
 
 
 
@@ -424,17 +479,17 @@ module.exports = function(controller) {
         "mother_name": results["motherName"],
         "phoneNumber": results["user"],
         "zip_code": results["cep"],
-        "address_street": results[""],
-        "address_number": results[""],
+        "address_street": results["addressStreet"],
+        "address_number": results["addressNumber"],
         "address_additional": results[""],
-        "address_neigbourhood": results[""],
-        "address_city":results[""],
-        "address_state":results[""],
-        "bank_number": results[""],
-        "bank_agency_number": results[""],
-        "bank_account_number": results[""],
-        "bank_account_last_digit": results[""],
-        "bank_account_type": results[""]
+        "address_neigbourhood": results["addressNeighbourhood"],
+        "address_city":results["addressCity"],
+        "address_state":results["addressState"],
+        "bank_number": results["banco"],
+        "bank_agency_number": results["agencia"],
+        "bank_account_number": results["conta"],
+        "bank_account_last_digit": results["ccDigit"],
+        "bank_account_type": "CORRENTE"
       }
       await bot.say("[SIGNUPINFO]+++"+dadosUsuario)
       await bot.say("[FINISH]+++[Encerramento Padrão]")
