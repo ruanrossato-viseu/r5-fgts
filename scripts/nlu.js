@@ -8,7 +8,7 @@ require("dotenv").config();
 module.exports.checkAffirmative = function checkAffirmative(response){
     response = response.toLowerCase()
     console.log(response)
-    if(response.includes("sim") || response == "s" || response == "tenho" || response == "uhum" || response == "ok") {
+    if(response.includes("sim") || response == "s" || response == "tenho" || response == "uhum" || response == "ok" || response == "deu") {
         console.log(response.includes("sim"))
         console.log("affirmative")
         return true

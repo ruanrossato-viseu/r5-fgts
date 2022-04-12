@@ -6,8 +6,21 @@ module.exports = function(controller) {
     const nlu = require('../scripts/nlu.js');
 
     flow.addAction("subscription")
+    flow.before("subscription",async(flow,bot)=>{
+        try{
+            if(flow.vars.step=="autorizacaoBanco"){
+                await flow.gotoThread("subscriptionFgts")
+            }
+        }
+        catch{
+                
+        }
+        
+    });
+
+    
     // Usuários com o aplicativo instalado, *Fazer o bot esperar 5 minutos e enviar esta mensagem
-    flow.addQuestion("[Subscription]+++Ótimo! Agora, vou precisar que você *autorize o saque-aniversário* dentro do aplicativo FGTS. Faça o cadastro no aplicativo, e depois é só optar pelo saque-aniversário.\
+    flow.addQuestion("[Subscription]+++Certo! Agora, vou precisar que você *autorize o saque-aniversário* dentro do aplicativo FGTS. Faça o cadastro no aplicativo, e depois é só optar pelo saque-aniversário.\
     \n\nÉ bem rápido, tem um passo-a-passo em vídeo caso tenha dúvida. Dá uma olhada:\
     \nhttps://youtu.be/tuXPnjnu33Q \
     \n\nQuando acabar, me avisa. Deu certo?",
@@ -63,9 +76,9 @@ module.exports = function(controller) {
     "inscricaoConsultarFgts",
     "subscriptionFgtsAgain")
 
-    flow.after(async (response, bot) => {
+    flow.after(async (vars, bot) => {
         await bot.cancelAllDialogs();
-        await bot.beginDialog("simulation");
+        await bot.beginDialog("simulation",{"cpf":vars.cpf});
     });
 
     controller.addDialog(flow);

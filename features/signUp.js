@@ -14,47 +14,74 @@ module.exports = function(controller) {
   flow.before("simulationChoice",async(flow,bot)=>{
     var simulationText = "[fgtsSimulation]+++"
     var choiceText = "[fgtsSimulation]+++"
-    if(flow.vars.simulation.length>1){
-      console.log("Mais de uma simulação")
-      simulationText+="Confira as melhores opções para você:\n"
-      for(var index = 0;index<flow.vars.simulation.length;index++){
-        var simulation = flow.vars.simulation[index]
-        
-        simulationText += `\n[${index+1}] ${simulation.bank}\
-                        \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
-                        \n  Você receberá: R$ ${simulation['simulation']['value']}\
-                        \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
+    console.log(flow.vars.simulation.hasSimulation)
+    if(flow.vars.simulation.hasSimulation){
+      var simulationList = flow.vars.simulation.simulation
+      if(simulationList.length>1){
+        console.log("Mais de uma simulação")
+        simulationText+="Confira as melhores opções para você:\n"
+        for(var index = 0;index<simulationList.length;index++){
+          var simulation = simulationList[index]
+          
+          simulationText += `\n[${index+1}] ${simulation.bank}\
+                          \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
+                          \n  Você receberá: R$ ${simulation['simulation']['value']}\
+                          \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
+        }
+        choiceText += "Qual das opções preferiu? _Digite o número do lado do nome do banco que quer contratar_"
       }
-      choiceText += "Qual das opções preferiu? _Digite o número do lado do nome do banco que quer contratar_"
-    }
 
-    else if (flow.vars.simulation.length==1){
-      console.log("Uma simulação")
-      simulationText+='Consegui a seguinte proposta para você:\n';
-      var simulation = flow.vars.simulation[0]
-      simulationText += `\n${simulation.bank}\
-                        \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
-                        \n  Você receberá: R$ ${simulation['simulation']['value']}\
-                        \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
-      choiceText += "O que achou da proposta? Quer contratar?"
-    }
+      else if (simulationList.length==1){
+        console.log("Uma simulação")
+        simulationText+='Consegui a seguinte proposta para você:\n';
+        var simulation = simulationList[0]
+        simulationText += `\n${simulation.bank}\
+                          \n  Saldo disponível para saque: R$ ${simulation['simulation']['balance']}\
+                          \n  Você receberá: R$ ${simulation['simulation']['value']}\
+                          \n  Parcelas adiantadas: ${simulation['simulation']['installments']}\n`
+        choiceText += "O que achou da proposta? Quer contratar?"
+      }
 
+      else{
+        console.log("Nenhuma simulação");
+        simulationText+='Infelizmente, não encontramos ofertas para você nesse momento.';      
+        choiceText += "Gostaria de tentar novamente?";
+      }
+      flow.setVar("simulationText",simulationText);
+      flow.setVar("choiceText",choiceText);
+      flow.setVar("simulationCount",simulationList.length);
+    
+    }
     else{
-      console.log("Nenhuma simulação")
-      simulationText+='Infelizmente, não encontramos ofertas para você nesse momento.';      
-      choiceText += "Gostaria de tentar novamente?"
-    }
-    flow.setVar("simulationText",simulationText)
-    flow.setVar("choiceText",choiceText)
-    flow.setVar("simulationCount",flow.vars.simulation.length)
-  })
+      if(flow.vars.simulation.error=="SemAutorizacaoBanco"){
+        await bot.say("[fgtsSimulation]+++Não foi possível concluir a simulação, porque o *Banco C6 não foi autorizado* no seu aplicativo do FGTS. Vamos tentar novamente!");
+        flow.setVar("step","autorizacaoBanco");
+        flow.setVar("cpf",flow.vars.simulation.cpf);
+        await bot.beginDialog("app-subscription",{"cpf":cpf});
+      }
 
+      else if(flow.vars.simulation.error=="semAdesaoSaqueAniversario"){
+        await bot.say("[fgtsSimulation]+++Não foi possível concluir a simulação, porque *não foi feita a adesão ao saque aniversário* no seu aplicativo do FGTS. Vamos tentar novamente!");
+        flow.setVar("step","saqueAniversario");
+        flow.setVar("cpf",flow.vars.simulation.cpf);
+        await bot.beginDialog("app-subscription",{"cpf":cpf});
+      }
+
+      else{
+        await bot.cancelAllDialogs();
+        await bot.beginDialog("simulationError");
+      }
+    }
+  }
+  );
   flow.addMessage("{{vars.simulationText}}","simulationChoice")
 
   
   flow.addQuestion("{{vars.choiceText}}",
   async(response,flow,bot) => {
-    console.log(flow.vars.simulation)
+    
+    var simulationList = flow.vars.simulation.simulation
+    console.log(simulationList)
     console.log(flow.vars.simulationCount)
     console.log(response)
     if(flow.vars.simulationCount == 0){
@@ -73,7 +100,7 @@ module.exports = function(controller) {
       console.log("Uma simulação")
       if(nlu.checkAffirmative(response)){
         await bot.say("[CHOICE]+++C6")
-        var bankChoice = flow.vars.simulation[0].bank
+        var bankChoice = simulationList[0].bank
         flow.setVar("simulationChoice",bankChoice)
         flow.gotoThread("name")
       }
@@ -87,7 +114,7 @@ module.exports = function(controller) {
     else if(flow.vars.simulationCount > 1){
       console.log("Mais de uma simulação")
       if(parseInt(response)>0 && parseInt(response)<=flow.vars.simulationCount){
-        var bankChoice = flow.vars.simulation[parseInt(response)].bank
+        var bankChoice = simulationList[parseInt(response)].bank
         flow.setVar("simulationChoice",bankChoice)
         flow.gotoThread("name")
       }

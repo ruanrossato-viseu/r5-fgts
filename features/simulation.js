@@ -8,7 +8,14 @@ module.exports = function(controller) {
 
     flow.addAction("fgtsSimulation")
    
+    flow.before("fgtsSimulation", async(flow,bot)=>{
+        if(flow.vars.cpf>0){
+            
+            await bot.say("[SIMULATION]+++"+cpf)
+            await flow.gotoThread("fgtsSimulationConclusion");
 
+        }
+    })
     function isNumeric(num){
         return !isNaN(num)
     }
@@ -22,6 +29,7 @@ module.exports = function(controller) {
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(cpf)) { 
                 await bot.say("[SIMULATION]+++"+cpf)
+                await flow.gotoThread("fgtsSimulationConclusion");
             }
             else {
                 await flow.gotoThread("fgtsSimulationAgain")
@@ -37,6 +45,7 @@ module.exports = function(controller) {
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(response)) {
                 await bot.say("[SIMULATION]+++"+cpf)
+                await flow.gotoThread("fgtsSimulationConclusion");
             }
             else {
                 await bot.beginDialog("agent-transfer")
@@ -51,7 +60,7 @@ module.exports = function(controller) {
             await flow.gotoThread("repeat")
         }, 
     "cpf",
-    "fgtsSimulation")
+    "fgtsSimulationConclusion")
 
     flow.addQuestion("[fgtsSimulation]+++Já estou finalizando a busca, aguarde mais um pouquinho por favor", 
         async(response,flow,bot) => {
