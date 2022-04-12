@@ -41,8 +41,8 @@ module.exports = function(controller) {
     flow.addQuestion("[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
     \n Ex: 123.45.789-01",
         async(response,flow,bot) => {
-          //var cpf = response.replaceAll(/\D/g, '')
-          var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
+            var cpf = response
+            var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
             if(cpfRegex.test(response)) {
                 await bot.say("[SIMULATION]+++"+cpf)
                 await flow.gotoThread("fgtsSimulationConclusion");
