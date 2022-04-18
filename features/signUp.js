@@ -53,6 +53,7 @@ module.exports = function(controller) {
     
     }
     else{
+      console.log(flow.vars.simulation.error)
       if(flow.vars.simulation.error=="SemAutorizacaoBanco"){
         await bot.say("[fgtsSimulation]+++Não foi possível concluir a simulação, porque o *Banco C6 não foi autorizado* no seu aplicativo do FGTS. Vamos tentar novamente!");
         flow.setVar("step","autorizacaoBanco");
@@ -68,6 +69,8 @@ module.exports = function(controller) {
       }
 
       else{
+        
+        await bot.say("[fgtsSimulation]+++Não foi possível fazer a sua simulação nesse momento");
         await bot.cancelAllDialogs();
         await bot.beginDialog("simulationError");
       }
