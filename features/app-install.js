@@ -28,10 +28,11 @@ module.exports = function(controller) {
     async(response, flow, bot) =>{
         response = response.toLowerCase()
         if(nlu.checkAffirmative(response)) {
-       }
-       else {
-          await bot.beginDialog("agent-transfer")
-       }
+        }
+        else {
+            await bot.cancelAllDialogs()
+            await bot.beginDialog("agent-transfer")
+        }
     },
     "aplicativo",
     "naoInstalado")
