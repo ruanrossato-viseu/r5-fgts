@@ -68,9 +68,16 @@ controller.ready(() => {
 
     controller.on("message", async (bot,message) => {  
         
-        console.log("inicio")  
-        await bot.beginDialog("inicio",{
-        });
+        const nlu = require('../scripts/nlu.js');
+        if(nlu.checkNegative(message)){
+            await bot.say("[INTRO]+++Agradeço sua atenção e desculpe pelo incômodo.\
+            \n\nPrecisando estou à disposição!")
+        }
+        else{
+            console.log("inicio")  
+            await bot.beginDialog("inicio",{})
+        }
+
     });
 
 });
