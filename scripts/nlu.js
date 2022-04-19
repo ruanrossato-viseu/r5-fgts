@@ -27,6 +27,7 @@ module.exports.checkAffirmative = function checkAffirmative(response){
 
 
 module.exports.checkNegative =  function checkNegative(response){
+    response = response.toLowerCase()
     if(response.includes("não") || response == "n"|| response.includes("nao")) {
         return true
     }
