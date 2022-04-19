@@ -5,9 +5,9 @@ module.exports = function(controller) {
     const flow = new BotkitConversation("agent-transfer", controller);
 
     flow.addAction("transbordo")
-    flow.addMessage("[transferToAgent]++Vou encaminhar para um de nossos especialistas para ajudar, logo tudo será resolvido. Por favor, espero um pouquinho.",
+    flow.addMessage("[transferToAgent]+++Para falar com um de nossos especialistas para ajudar, basta clicar no link a seguir durante horário comercial: https://zprs.in/FGTS",
                     "transbordo")
-    // flow.addMessage("[TRANSFER]++[Transferência]")
+                    
     flow.after(async (results, bot) => {
         await bot.cancelAllDialogs();
     });
