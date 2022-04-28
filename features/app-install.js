@@ -19,12 +19,23 @@ module.exports = function(controller) {
     "aplicativo",
     "app")
 
+    flow.addMessage("[AppInstall]+++Caso você tenha um *celular Android*, acesse sua *Play Store*, localize o *App do FGTS* e instale.\
+    \nSe preferir, use o link abaixo:\
+    \n_https://play.google.com/store/apps/details?id=br.gov.caixa.fgts.trabalhador_","naoInstalado")
+
+    flow.addMessage("[AppInstall]+++Caso contrário, se for um *iPhone*, acesse sua *App Store*, localize o *App do FGTS* e instale.\
+    \nSe preferir, use o link abaixo:\
+    \n_https://apps.apple.com/br/app/fgts/id1038441027_","naoInstalado")
 
     // Usuários com o aplicativo não instalado
-    flow.addQuestion("[AppInstall]+++Para instalar, clique em:\
-        \n\nAndroid: https://play.google.com/store/apps/details?id=br.gov.caixa.fgts.trabalhador\
-        \nApple: https://apps.apple.com/br/app/fgts/id1038441027\
-        \n\nDepois que finalizar, eu quero saber se você conseguiu instalar. E ai conseguiu?",
+    flow.addQuestion("[AppInstall]+++Me avise aqui assim que terminar esse procedimento",
+    async(response, flow, bot) =>{
+    },
+    "aplicativo",
+    "naoInstalado")
+
+    // Usuários com o aplicativo não instalado
+    flow.addQuestion("[AppInstall]+++Deu certo?",
     async(response, flow, bot) =>{
         response = response.toLowerCase()
         if(nlu.checkAffirmative(response)) {

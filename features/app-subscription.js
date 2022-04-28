@@ -15,7 +15,6 @@ module.exports = function(controller) {
         catch{
                 
         }
-        
     });
 
     
@@ -30,7 +29,14 @@ module.exports = function(controller) {
     \n5 - Selecione a opção *Saque Aniversário do FGTS*\
     \n6 - Leia com atenção os termos de adesão e aceite\
     \n7 - Escolha a *Modalidade saque aniversário*\
-    \n\nQuando acabar, me avisa. *Deu certo*?",
+    \n\nQuando acabar, me chama para continuarmos. ",
+    async(response,flow,bot) => {
+        
+    },
+    "inscricaoSaqueAniversario",
+    "subscription")
+
+    flow.addQuestion("Deu certo?",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
           await flow.gotoThread("subscriptionFgts")
@@ -42,9 +48,8 @@ module.exports = function(controller) {
     "inscricaoSaqueAniversario",
     "subscription")
 
-    flow.addQuestion("[Subscription]+++Não conseguiu seguir o passo a passo para *autorizar o saque-aniversário*?\
-    \n Se preferir temos um passo a passo em vídeo, *basta clicar no link* https://youtu.be/tuXPnjnu33Q \
-    \n\n Depois que finalizar, me avisa se deu certo por favor.",
+    flow.addQuestion("[Subscription]+++Se preferir temos um passo a passo em vídeo, *basta clicar no link:* https://youtu.be/tuXPnjnu33Q \
+    \n\nDepois que finalizar, me avisa se deu certo, por favor.",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
           await flow.gotoThread("subscriptionFgts")
@@ -56,15 +61,15 @@ module.exports = function(controller) {
     "inscricaoSaqueAniversario",
     "subscriptionAgain")
 
-    flow.addQuestion("[Subscription]+++Certo! Agora, por favor *autorize o banco escolhido consultar o seu FGTS* dentro do mesmo aplicativo.\
-    \nSe tiver alguma dúvida, também tenho um passo-a-passo explicando.\
+    flow.addQuestion("[Subscription]+++Certo, estamos quase no fim! Agora, por favor *autorize o _Banco C6_ a consultar o seu FGTS* dentro do app do FGTS.\
+    \nSe tiver alguma dúvida, também tenho um passo-a-passo explicando:\
     \n\n1 - Abra o aplicativo do FGTS\
     \n2 - Aperta no botão *Entrar no aplicativo*\
     \n3 - Digite seu CPF e marque a caixinha *Não sou um robô*\
     \n4 - Informe sua senha e aperte em *entrar*\
     \n5 - Na tela inicial, seleciona a opção *autorizar bancos a consultarem seu FGTS*\
     \n6 - Selecione a opção *empréstimo saque aniversário*\
-    \n7 - Selecione o banco C6\
+    \n7 - Selecione o *Banco C6*\
     \n8 - Confirme no botão *Confirmar seleção*\
     \n\nDeu certo?",
     async(response,flow,bot) => {
@@ -77,9 +82,15 @@ module.exports = function(controller) {
     "inscricaoConsultarFgts",
     "subscriptionFgts")
     
-    flow.addQuestion("[Subscription]+++Conseguiu seguir o passo a passo para *autorizar o banco para consultar seu FGTS*?\
-    \n Caso não, *temos o passo-a-passo em vídeo nesse link aqui*: https://youtu.be/B1GFwRNnI9U \
-    \n\n Depois que finalizar, *me avisa se deu certo* por favor. Conseguiu?",
+    flow.addQuestion("[Subscription]+++Então dê uma olhada no *passo-a-passo em vídeo* nesse link aqui: _https://youtu.be/B1GFwRNnI9U_ \
+    \n\nDepois que finalizar, *me avisa aqui*, por favor",
+    async(response,flow,bot) => {
+       
+    },
+    "inscricaoConsultarFgts",
+    "subscriptionFgtsAgain")
+
+    flow.addQuestion("[Subscription]+++Conseguiu?",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
         }
