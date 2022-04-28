@@ -22,14 +22,14 @@ module.exports = function(controller) {
     // Usuários com o aplicativo instalado, *Fazer o bot esperar 5 minutos e enviar esta mensagem
     flow.addQuestion("[Subscription]+++Ótimo! Agora, vou precisar que você *autorize o saque-aniversário* dentro do aplicativo FGTS. Faça o cadastro no aplicativo, e depois é só optar pelo saque-aniversário.\
     \n\n1 - Abra o aplicativo do FGTS\
-    \n2 - Aperta no botão *'Entrar no aplicativo'*\
-    \n3 - Digite seu CPF e marque a caixinha *'Não sou um robô'*\
-    \n4 - Informe sua senha e aperte em *'entrar'*\
+    \n2 - Aperta no botão *\'Entrar no aplicativo\'*\
+    \n3 - Digite seu CPF e marque a caixinha *\'Não sou um robô\'*\
+    \n4 - Informe sua senha e aperte em *\'entrar\'*\
     \n5 - Confirme seus dados pessoais\
     \n6 - Leia as cláusulas e aceite\
-    \n5 - Selecione a opção *'Saque Aniversário do FGTS'*\
+    \n5 - Selecione a opção *\'Saque Aniversário do FGTS\'*\
     \n6 - Leia com atenção os termos de adesão e aceite\
-    \n7 - Escolha a *'Modalidade saque aniversário'*\
+    \n7 - Escolha a *\'Modalidade saque aniversário\'*\
     \n\nQuando acabar, me avisa. *Deu certo*?",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
@@ -59,13 +59,13 @@ module.exports = function(controller) {
     flow.addQuestion("[Subscription]+++Certo! Agora, por favor *autorize o banco escolhido consultar o seu FGTS* dentro do mesmo aplicativo.\
     \nSe tiver alguma dúvida, também tenho um passo-a-passo explicando.\
     \n\n1 - Abra o aplicativo do FGTS\
-    \n2 - Aperta no botão *'Entrar no aplicativo'*\
-    \n3 - Digite seu CPF e marque a caixinha *'Não sou um robô*'\
-    \n4 - Informe sua senha e aperte em *'entrar'*\
-    \n5 - Na tela inicial, seleciona a opção *'autorizar bancos a consultarem seu FGTS'*\
-    \n6 - Selecione a opção '*empréstimo saque aniversário*'\
-    \n7 - Selecione o banco que o consultor está te solicitando\
-    \n8 - Confirme no botão '*Confirmar seleção*'\
+    \n2 - Aperta no botão *\'Entrar no aplicativo\'*\
+    \n3 - Digite seu CPF e marque a caixinha *\'Não sou um robô\'*\
+    \n4 - Informe sua senha e aperte em *\'entrar\'*\
+    \n5 - Na tela inicial, seleciona a opção *\'autorizar bancos a consultarem seu FGTS\'*\
+    \n6 - Selecione a opção *\'empréstimo saque aniversário\'*\
+    \n7 - Selecione o banco C6\
+    \n8 - Confirme no botão *\'Confirmar seleção\'*\
     \n\nDeu certo?",
     async(response,flow,bot) => {
         if(nlu.checkAffirmative(response)) {
