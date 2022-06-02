@@ -16,7 +16,34 @@ module.exports = function(controller) {
     // flow.before("fgtsSimulation",async(flow,bot)=>{console.log(flow.vars.user)})
 
     // Solicita CPF
-    flow.addQuestion("[fgtsSimulation]+++Se quiser tentar novamente, me passe seu *CPF completo*",
+    flow.addQuestion(
+        {
+            "type":"message",
+"section":"Subscription",
+            "body":"[fgtsSimulation]+++Se quiser tentar novamente, me passe seu *CPF completo*",
+            "footer":"",
+            "header":"",
+      
+            "buttons":[
+                {
+                    "text": "",
+                    "payload": ""
+                },
+                {
+                    "text": "",
+                    "payload": ""
+                }
+            ],
+            
+            "media":
+                {
+                    "contentType": "image|video|document",
+                    "mediaURL":"",
+                    "mediaID":"",
+                    "caption":"",
+                    "filename":""
+                }
+            },
         async(response,flow,bot) => {
           var cpf = response
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
@@ -30,8 +57,35 @@ module.exports = function(controller) {
     "cpf",
     "fgtsSimulation")
 
-    flow.addQuestion("[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
-    \n Ex: 123.45.789-01",
+    flow.addQuestion(
+        {
+            "type":"message",
+"section":"Subscription",
+            "body":"[fgtsSimulation]+++Não consegui compreender. Tente novamente digitar o seu *CPF*, por favor.\
+            \n Ex: 123.45.789-01",
+            "footer":"",
+            "header":"",
+      
+            "buttons":[
+                {
+                    "text": "",
+                    "payload": ""
+                },
+                {
+                    "text": "",
+                    "payload": ""
+                }
+            ],
+            
+            "media":
+                {
+                    "contentType": "image|video|document",
+                    "mediaURL":"",
+                    "mediaID":"",
+                    "caption":"",
+                    "filename":""
+                }
+            },
         async(response,flow,bot) => {
           //var cpf = response.replaceAll(/\D/g, '')
           var cpfRegex = new RegExp(/^\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{3}( ?[.-] ?| )?\d{2}$/)
@@ -46,14 +100,68 @@ module.exports = function(controller) {
     "fgtsSimulationAgain")
 
     
-    flow.addQuestion("[fgtsSimulation]+++Ok, vou analisar as propostas para esse CPF. Assim que eu acabar, chamo você.",
+    flow.addQuestion(
+        {
+            "type":"message",
+"section":"Subscription",
+            "body":"[fgtsSimulation]+++Ok, vou analisar as propostas para esse CPF. Assim que eu acabar, chamo você.",
+            "footer":"",
+            "header":"",
+      
+            "buttons":[
+                {
+                    "text": "",
+                    "payload": ""
+                },
+                {
+                    "text": "",
+                    "payload": ""
+                }
+            ],
+            
+            "media":
+                {
+                    "contentType": "image|video|document",
+                    "mediaURL":"",
+                    "mediaID":"",
+                    "caption":"",
+                    "filename":""
+                }
+            },
         async(response,flow,bot) => {
             await flow.gotoThread("repeat")
         }, 
     "cpf",
     "fgtsSimulation")
 
-    flow.addQuestion("[fgtsSimulation]+++Já estou finalizando a busca, aguarde mais um pouquinho por favor", 
+    flow.addQuestion(
+        {
+            "type":"message",
+"section":"Subscription",
+            "body":"[fgtsSimulation]+++Já estou finalizando a busca, aguarde mais um pouquinho por favor", 
+            "footer":"",
+            "header":"",
+      
+            "buttons":[
+                {
+                    "text": "",
+                    "payload": ""
+                },
+                {
+                    "text": "",
+                    "payload": ""
+                }
+            ],
+            
+            "media":
+                {
+                    "contentType": "image|video|document",
+                    "mediaURL":"",
+                    "mediaID":"",
+                    "caption":"",
+                    "filename":""
+                }
+            },
         async(response,flow,bot) => {
             await flow.repeat()
         }, 

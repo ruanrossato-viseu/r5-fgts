@@ -6,24 +6,90 @@ module.exports = function(controller) {
     
     flow.addAction("intro")
 
-    // flow.addMessage("[INTRO]+++Olá, sou a Raya, assistente virtual da R5 Digital! Somos uma plataforma multi-bancária Online. Estou aqui para te ajudar a adiantar o saque do FGTS retido.",
-    //                 "intro")
 
-    flow.addMessage("[INTRO]+++Para garantir sua segurança e privacidade, seguimos as diretrizes da Lei Geral de Proteção de Dados. Para saber mais, acesse o link http://r5promotora.com.br/politica-de-privacidade/", 
+    flow.addMessage(
+        {
+            "type":"message",
+            "section":"Introduction",
+            "body":"Para garantir sua segurança e privacidade, seguimos as diretrizes da Lei Geral de Proteção de Dados", 
+            "footer":"",
+            "header":"",
+            // "buttons":[
+            //     {
+            //         "text": "",
+            //         "payload": ""
+            //     },
+            //     {
+            //         "text": "",
+            //         "payload": ""
+            //     }
+            // ],
+            
+            // "media":
+            //     {
+            //         "contentType": "image|video|document",
+            //         "mediaURL":"",
+            //         "mediaID":"",
+            //         "caption":"",
+            //         "filename":""
+            //     }
+            
+            },
                     "intro")
 
+    // flow.addQuestion(
+    //     {
+    //         "type":"buttons",
+    //         "section":"Subscription",
+    //         "body":"O que você deseja fazer hoje?",
+    //         "footer":"Clique na opção desejada",
+    //         // "header":"",
     
-    // flow.addMessage({
-    //     text: "teste",
-    //     channelData: {
-    //         mediaUrl: 'https://i.imgur.com/9n3qoKx.png',
-    //     },
+    //         "buttons":[
+    //             {
+    //                 "text": "Consignado",
+    //                 "payload": "1"
+    //             },
+    //             {
+    //                 "text": "Adiantamento de FGTS",
+    //                 "payload": "2"
+    //             },
+    //             {
+    //                 "text": "Refinanciamento",
+    //                 "payload": "3"
+    //             }
+    //         ]
+            
+    //         // "media":
+    //         //     {
+    //         //         "contentType": "image|video|document",
+    //         //         "mediaURL":"",
+    //         //         "mediaID":"",
+    //         //         "caption":"",
+    //         //         "filename":""
+    //         //     }
+    //         },
+    //     async(response, flow, bot) =>{
+            
+    //         if(response=="1"){                        
+    //             await bot.cancelAllDialogs();
+    //             await bot.beginDialog("consignado");
+    //         }
+    //         if(response=="2"){                        
+    //             await bot.cancelAllDialogs();
+    //             await bot.beginDialog("app-install");
+    //         }
+    //         if(response=="3"){                        
+    //             await bot.cancelAllDialogs();
+    //             await bot.beginDialog("refin");
+    //         }
     // },
+    // "intro",
     // "intro")
-    // TESTE KARIMATA
     
 
     flow.after(async (response, bot) => {
+                
         await bot.cancelAllDialogs();
         await bot.beginDialog("app-install");
     });

@@ -40,7 +40,11 @@ controller.ready(() => {
     controller.loadModules(__dirname + '/features');
 
     controller.interrupts("PARAR" , "message", async (bot, message) => {
-        await bot.reply(message, "Até a próxima");
+        await bot.say( {
+            "type":"message",
+            "section":"stop",
+            "body":"Até a próxima! Se precisar, é só chamar." 
+            });
         console.log("Encerramento")
         await bot.cancelAllDialogs();
     });
@@ -69,8 +73,35 @@ controller.ready(() => {
     controller.on("message", async (bot,message) => {  
         const nlu = require('./scripts/nlu.js');
         if(nlu.checkNegative(message.text)){
-            await bot.say("[INTRO]+++Agradeço sua atenção e desculpe pelo incômodo.\
-            \n\nPrecisando estou à disposição!")
+            await bot.say(
+                {
+                    "type":"message",
+                    "section":"Subscription",
+                    "body":"Agradeço sua atenção e desculpe pelo incômodo.\
+                    \n\nPrecisando estou à disposição!",
+                    "footer":"Aperte no botão abaixo",
+                    "header":"Caso mude de ideia",
+              
+                    "buttons":[
+                        {
+                            "text": "Quero simular",
+                            "payload": "simulacao"
+                        },
+                        {
+                            "text": "Agora não",
+                            "payload": "nao"
+                        }
+                    ],
+                    
+                    "media":
+                        {
+                            "contentType": "image|video|document",
+                            "mediaURL":"",
+                            "mediaID":"",
+                            "caption":"",
+                            "filename":""
+                        }
+                    },)
         }
         else{
             console.log("inicio")  
